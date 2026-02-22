@@ -19,8 +19,6 @@ export const registerUser = async (payload: RegisterDTO) => {
 
     const hashed_password = await argon2.hash(payload.password);
 
-    console.log("hashed_password", hashed_password);
-
     const user = await db.insert(usersTable).values({
         ...payload,
         password: hashed_password
@@ -44,7 +42,6 @@ export const loginUser = async(payload: LoginDTO) => {
     const hashed_pass = user.password!;
 
     const is_valid = await argon2.verify(hashed_pass, payload.password);
-    console.log("JWT_SECRET", JWT_SECRET);
     
     if(is_valid){
         const token = await sign({
